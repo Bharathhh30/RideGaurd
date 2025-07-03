@@ -10,7 +10,7 @@ import SafetyTips from './components/SafetyTips';
 import EmergencyContacts from './components/EmergencyContacts';
 import EmergencyQRCode from './components/emergency/EmergencyQRCode';
 import QRScanDisplay from './components/emergency/QRScanDisplay';
-import EmergencyInfoDisplay from './components/emergency/PagesForWorld/EmergencyInfoDisplay';
+import EmergencyInfoDisplay from './PagesForWorld/EmergencyInfoDisplay';
 
 function MainContent() {
   return (

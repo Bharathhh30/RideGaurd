@@ -105,7 +105,12 @@ const generateQRData = () => {
               onDownload={handleDownload}
             />
           </div>
-          
+          {/* testing */}
+          <div>
+            <button className='bg-blue-300 p-3 rounded-lg' onClick={() => {
+      window.location.href = "/emergencyinfo/test";
+    }}>Click me i say </button>
+          </div>
         </div>
       </div>
     </div>

@@ -65,6 +65,7 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<MainContent />} />
       <Route path="/emergencyinfo/:email" element={<EmergencyInfoDisplay />} />
+      <Route path="/emer" element={<div>hi</div>} />
     </Routes>
   );
 }

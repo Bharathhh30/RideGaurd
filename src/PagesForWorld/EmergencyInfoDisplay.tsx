@@ -16,6 +16,7 @@ type EmergencyInfo = {
 
 export default function EmergencyInfoDisplay() {
   const { email } = useParams();
+  console.log(email)
   const [info, setInfo] = useState<EmergencyInfo | null>(null);
   const [loading, setLoading] = useState(true);
 

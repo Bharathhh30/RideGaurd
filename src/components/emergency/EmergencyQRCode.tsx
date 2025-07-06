@@ -86,7 +86,7 @@ const generateQRData = () => {
   const { photo, ...dataWithoutPhoto } = emergencyInfo;
   const baseUrl = window.location.origin;
   const email = dataWithoutPhoto.email?.trim().toLowerCase();
-
+  console.log(email)
   return `${baseUrl}/emergencyinfo/${encodeURIComponent(email)}`;
 };
 

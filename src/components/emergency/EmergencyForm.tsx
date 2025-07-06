@@ -70,6 +70,18 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
         </div>
 
         <div>
+          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="text"
+            name="email"
+            value={emergencyInfo.email}
+            onChange={onChange}
+            className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500"
+            required
+          />
+        </div>
+
+        <div>
           <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
           <input
             type="date"

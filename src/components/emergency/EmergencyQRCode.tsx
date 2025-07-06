@@ -8,6 +8,7 @@ import { downloadQRCode } from '../../utils/qrcode';
 export default function EmergencyQRCode() {
   const [emergencyInfo, setEmergencyInfo] = useState<EmergencyInfo>({
     fullName: '',
+    email : '',
     bloodType: '',
     emergencyContact: '',
     allergies: '',
@@ -29,54 +30,64 @@ export default function EmergencyQRCode() {
     setEmergencyInfo(prev => ({ ...prev, photo }));
   };
 
-  const handleDownload = () => {
-    if (!emergencyInfo.fullName) {
-      alert('Please enter your full name before downloading the QR code.');
-      return;
-    }
-    const filename = `emergency-info-${emergencyInfo.fullName.toLowerCase().replace(/\s+/g, '-')}`;
-    downloadQRCode(generateQRData(), filename);
-  };
-  // approach - 1
-  // const generateQRData = () => {
-  //   const baseUrl = window.location.origin + window.location.pathname;
-  //   // Exclude photo from QR data to prevent "Data too long" error
-  //   const { photo, ...dataWithoutPhoto } = emergencyInfo;
-  //   const data = {
-  //     ...dataWithoutPhoto,
-  //     generatedAt: new Date().toISOString(),
-  //   };
-  //   return `${baseUrl}?qr=${encodeURIComponent(JSON.stringify(data))}`;
+  // const handleDownload = () => {
+  //   if (!emergencyInfo.fullName) {
+  //     alert('Please enter your full name before downloading the QR code.');
+  //     return;
+  //   }
+  //   const filename = `emergency-info-${emergencyInfo.fullName.toLowerCase().replace(/\s+/g, '-')}`;
+  //   downloadQRCode(generateQRData(), filename);
   // };
 
-  // approach -2
-//   const generateQRData = () => {
+  const handleDownload = async () => {
+  if (!emergencyInfo.fullName || !emergencyInfo.email) {
+    alert('Please enter your full name and email before downloading the QR code.');
+    return;
+  }
+
+  try {
+    // Send to backend
+    const res = await fetch('http://localhost:3000/api/emergencyinfo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emergencyInfo),
+    });
+
+    if (!res.ok) throw new Error('Failed to save to backend');
+
+    const filename = `emergency-info-${emergencyInfo.fullName.toLowerCase().replace(/\s+/g, '-')}`;
+    downloadQRCode(generateQRData(), filename);
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong while saving data.');
+  }
+};
+
+
+
+// apporach - 3
+// const generateQRData = () => {
 //   const { photo, ...dataWithoutPhoto } = emergencyInfo;
 //   const data = {
 //     ...dataWithoutPhoto,
 //     generatedAt: new Date().toISOString(),
 //   };
-//   console.log(data,"ikkada")
-//   // Convert to readable string
-  
-//   return Object.entries(data)
-//     .map(([key, val]) => `${key}: ${val}`)
-//     .join('\n');
+//   console.log(data,"here")
+//   // const firstName = data.fullName.trim().split(" ")[0].toLowerCase();
+//   const baseUrl = window.location.origin;
+//   const encodedData = encodeURIComponent(JSON.stringify(data));
+
+//   return `${baseUrl}/emergencyinfo/${firstName}?data=${encodedData}`;
 // };
 
-// apporach - 3
 const generateQRData = () => {
   const { photo, ...dataWithoutPhoto } = emergencyInfo;
-  const data = {
-    ...dataWithoutPhoto,
-    generatedAt: new Date().toISOString(),
-  };
-
-  const firstName = data.fullName.trim().split(" ")[0].toLowerCase();
   const baseUrl = window.location.origin;
-  const encodedData = encodeURIComponent(JSON.stringify(data));
+  const email = dataWithoutPhoto.email?.trim().toLowerCase();
 
-  return `${baseUrl}/emergencyinfo/${firstName}?data=${encodedData}`;
+  return `${baseUrl}/emergencyinfo/${encodeURIComponent(email)}`;
 };
 
 

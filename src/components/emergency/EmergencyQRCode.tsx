@@ -47,7 +47,7 @@ export default function EmergencyQRCode() {
 
   try {
     // Send to backend
-    const res = await fetch('http://localhost:3000/api/emergencyinfo', {
+    const res = await fetch('https://ridegaurd-backend.onrender.com/api/emergencyinfo', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ export interface EmergencyInfo {
   allergies: string;
   medications: string;
   medicalConditions: string;
-  photo?: string;
+  photo?: File | null;
   dateOfBirth: string;
   address: string;
   phoneNumber: string;

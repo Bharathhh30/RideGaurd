@@ -1,25 +1,28 @@
-import React, { useRef } from 'react';
-import { Camera, Upload } from 'lucide-react';
-import type { EmergencyInfo } from '../../types/emergency';
+import React, { useRef } from "react";
+import { Camera, Upload } from "lucide-react";
+import type { EmergencyInfo } from "../../types/emergency";
 
 interface EmergencyFormProps {
   emergencyInfo: EmergencyInfo;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  onPhotoChange: (photo: string) => void;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  onPhotoChange: (photo: File) => void;
 }
 
-export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }: EmergencyFormProps) {
+export default function EmergencyForm({
+  emergencyInfo,
+  onChange,
+  onPhotoChange,
+}: EmergencyFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target?.result as string;
-        onPhotoChange(result);
-      };
-      reader.readAsDataURL(file);
+      onPhotoChange(file);
     }
   };
 
@@ -29,7 +32,11 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
         <div className="relative inline-block">
           {emergencyInfo.photo ? (
             <img
-              src={emergencyInfo.photo}
+              src={
+                typeof emergencyInfo.photo === "string"
+                  ? emergencyInfo.photo
+                  : URL.createObjectURL(emergencyInfo.photo)
+              }
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover border-4 border-orange-200"
             />
@@ -58,7 +65,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
 
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Full Name *</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Full Name *
+          </label>
           <input
             type="text"
             name="fullName"
@@ -70,7 +79,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
           <input
             type="text"
             name="email"
@@ -82,7 +93,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Date of Birth
+          </label>
           <input
             type="date"
             name="dateOfBirth"
@@ -95,7 +108,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
 
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Phone Number
+          </label>
           <input
             type="tel"
             name="phoneNumber"
@@ -107,7 +122,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Blood Type</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Blood Type
+          </label>
           <select
             name="bloodType"
             value={emergencyInfo.bloodType}
@@ -115,15 +132,19 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
             className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500"
           >
             <option value="">Select Blood Type</option>
-            {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(type => (
-              <option key={type} value={type}>{type}</option>
+            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Address</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Address
+        </label>
         <textarea
           name="address"
           value={emergencyInfo.address}
@@ -135,7 +156,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Emergency Contact *</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Emergency Contact *
+        </label>
         <input
           type="text"
           name="emergencyContact"
@@ -148,7 +171,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Allergies</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Allergies
+        </label>
         <textarea
           name="allergies"
           value={emergencyInfo.allergies}
@@ -160,7 +185,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Current Medications</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Current Medications
+        </label>
         <textarea
           name="medications"
           value={emergencyInfo.medications}
@@ -172,7 +199,9 @@ export default function EmergencyForm({ emergencyInfo, onChange, onPhotoChange }
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Medical Conditions</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Medical Conditions
+        </label>
         <textarea
           name="medicalConditions"
           value={emergencyInfo.medicalConditions}
